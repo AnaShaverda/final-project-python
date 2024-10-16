@@ -1,0 +1,25 @@
+<!DOCTYPE html>
+<html lang="en">
+  <head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <title>Available Books</title>
+  </head>
+  <body>
+    <div class="container">
+      <h1>Available Books</h1>
+      <ul>
+        {% for book in books %}
+        <li>
+          <h2>{{ book.title }}</h2>
+          <p>Author: {{ book.author.name }}</p>
+          <p>Genre: {{ book.genre.name }}</p>
+          <p>Available Copies: {{ book.stock_quantity }}</p>
+          <a href="{% url 'loan_book' book.id %}">Loan this Book</a>
+        </li>
+        {% endfor %}
+      </ul>
+      <a href="#">Back to Home</a>
+    </div>
+  </body>
+</html>

@@ -1,0 +1,28 @@
+<!DOCTYPE html>
+<html lang="en">
+  <head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <title>Loan Book</title>
+  </head>
+  <body>
+    <div class="container">
+      <h1>Loan Book: {{ book.title }}</h1>
+      <p><strong>Author:</strong> {{ book.author.name }}</p>
+      <p><strong>Genre:</strong> {{ book.genre.name }}</p>
+      <p><strong>Publication Date:</strong> {{ book.publication_date }}</p>
+      <p><strong>Available Stock:</strong> {{ book.stock_quantity }}</p>
+
+      {% if book.stock_quantity > 0 %}
+      <form method="POST">
+        {% csrf_token %}
+        <button type="submit">Loan this Book</button>
+      </form>
+      {% else %}
+      <p>This book is currently unavailable for loan.</p>
+      {% endif %}
+
+      <a href="#">Back to Home</a>
+    </div>
+  </body>
+</html>
