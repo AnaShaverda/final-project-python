@@ -44,7 +44,8 @@ INSTALLED_APPS = [
 
 
 AUTH_USER_MODEL = 'lib.CustomUser'
-
+LOGIN_REDIRECT_URL = '/'
+LOGOUT_REDIRECT_URL = '/login/'
 MIDDLEWARE = [
     'django.middleware.security.SecurityMiddleware',
     'django.contrib.sessions.middleware.SessionMiddleware',
@@ -60,7 +61,7 @@ ROOT_URLCONF = 'library.urls'
 TEMPLATES = [
     {
         'BACKEND': 'django.template.backends.django.DjangoTemplates',
-        'DIRS': [],
+       'DIRS': [BASE_DIR / 'lib/templates'],
         'APP_DIRS': True,
         'OPTIONS': {
             'context_processors': [

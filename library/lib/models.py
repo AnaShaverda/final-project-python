@@ -1,5 +1,8 @@
 from django.db import models
 from django.contrib.auth.models import AbstractUser
+from django.utils import timezone
+from rest_framework.response import Response
+from rest_framework import generics, viewsets
 
 class CustomUser(AbstractUser):
     personal_number = models.CharField(max_length=20, unique=True)
@@ -41,15 +44,21 @@ class Book(models.Model):
 class BookLoan(models.Model):
     book = models.ForeignKey(Book, on_delete=models.CASCADE)
     user = models.ForeignKey(CustomUser, on_delete=models.CASCADE)
-    loan_date = models.DateTimeField(auto_now_add=True)
-    return_date = models.DateTimeField(null=True, blank=True)
+    loan_date = models.DateTimeField(auto_now_add=True) 
+    return_date = models.DateTimeField(null=True, blank=True) 
 
     def __str__(self):
         return f"{self.user} borrowed {self.book.title}"
 
     def is_active(self):
-        """Check if the loan is still active."""
+        """Check if the loan is still active (not returned)."""
         return self.return_date is None
+
+    def loan_duration(self):
+        """Calculate the duration of the loan in days."""
+        if self.return_date:
+            return (self.return_date - self.loan_date).days
+        return (timezone.now() - self.loan_date).days
 
 class Reservation(models.Model):
     book = models.ForeignKey(Book, on_delete=models.CASCADE)
@@ -64,3 +73,4 @@ class Reservation(models.Model):
         """Deactivate the reservation."""
         self.is_active = False
         self.save()
+
