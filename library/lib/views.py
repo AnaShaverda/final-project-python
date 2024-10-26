@@ -8,6 +8,8 @@ from django.contrib.auth.mixins import LoginRequiredMixin, UserPassesTestMixin
 from django.contrib.auth.decorators import login_required
 from django.utils import timezone
 from django.db.models import Count
+from rest_framework import generics, status
+
 
 def is_staff(user):
     return user.is_staff
@@ -39,11 +41,13 @@ class UserRegistrationView(generics.CreateAPIView):
     serializer_class = UserRegistrationSerializer
 
     def get(self, request):
-    
-        return render(request, 'registration/register.html')  
+        return render(request, 'registration/register.html')
 
     def post(self, request, *args, **kwargs):
-        return super().post(request, *args, **kwargs)
+        serializer = self.get_serializer(data=request.data)
+        serializer.is_valid(raise_exception=True)
+        self.perform_create(serializer)
+        return Response(serializer.data, status=status.HTTP_201_CREATED)
 
 class AuthorViewSet(LoginRequiredMixin, UserPassesTestMixin, viewsets.ModelViewSet):
     queryset = Author.objects.all()

@@ -14,7 +14,7 @@ class UserRegistrationSerializer(serializers.ModelSerializer):
             personal_number=validated_data['personal_number'],
             birth_date=validated_data['birth_date']
         )
-        user.set_password(validated_data['password'])
+        user.set_password(validated_data['password']) 
         user.save()
         return user
 
